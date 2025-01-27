@@ -1,4 +1,7 @@
 earthengine-api==0.1.358
+google-api-python-client==2.88.0
+google-auth==2.22.0
+google-auth-httplib2==0.1.0
 streamlit==1.25.0
 geopandas==0.13.2
 geemap==0.19.6
