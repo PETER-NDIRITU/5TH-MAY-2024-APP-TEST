@@ -1,5 +1,5 @@
 import streamlit as st
-import earthengine-api as ee
+import ee
 import datetime
 import geopandas as gpd
 import geemap.foliumap as geemap
