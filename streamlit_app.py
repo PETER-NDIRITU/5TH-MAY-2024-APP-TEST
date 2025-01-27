@@ -1,4 +1,3 @@
-import ee.batch
 import streamlit as st
 import ee
 import datetime
