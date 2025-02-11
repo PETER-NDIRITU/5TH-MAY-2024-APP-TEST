@@ -1,3 +1,4 @@
+import ee.batch
 import streamlit as st
 import ee
 import datetime
@@ -17,18 +18,19 @@ import networkx as nx
 import tempfile
 
 # Initialize Earth Engine
-ee.Initialize()
+ee.Initialize(project="nairobiairqualityapp")
+ee.Authenticate()
 
 def load_kenyan_counties():
     return gpd.read_file(
-        "C:/Users/thuku/OneDrive/Desktop/MyGeospatialProjects/CoffeeComplianceMonitorApp/Datasets/Counties/Counties.shp")
+        "Counties.shp")
 
 def filter_county_by_name(county, query):
     return county[county['NAME'].str.contains(query, case=False)]
 
 def load_croplands():
     return gpd.read_file(
-        "C:/Users/thuku/OneDrive/Desktop/MyGeospatialProjects/CoffeeComplianceMonitorApp/Datasets/EUDR_Coffee_Farms/All_Coffee_Farms.shp"
+        "All_Coffee_Farms.shp"
     )
 
 def filter_cropland_by_county_and_type(croplands, selected_county, selected_cropland):
