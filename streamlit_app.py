@@ -18,20 +18,44 @@ import networkx as nx
 import tempfile
 
 # Initialize Earth Engine
-ee.Initialize(project="nairobiairqualityapp")
+ee.Initialize(project="ee-thukupeter487soknotproject")
 ee.Authenticate()
 
-def load_kenyan_counties():
-    return gpd.read_file(
-        "Counties.shp")
+# def load_kenyan_counties():
+#     return gpd.read_file(
+#         "Counties.shp")
 
+def load_kenyan_counties():
+    try:
+        import geopandas as gpd
+        from pathlib import Path
+        
+        # Assuming your shapefile is in the data directory
+        file_path = Path('Counties.shp')  # Update this path
+        return gpd.read_file(str(file_path))
+    except Exception as e:
+        print(f"Error loading counties: {e}")
+        return None
+    
 def filter_county_by_name(county, query):
     return county[county['NAME'].str.contains(query, case=False)]
 
+# def load_croplands():
+#     return gpd.read_file(
+#         "All_Coffee_Farms.shp"
+#     )
+
 def load_croplands():
-    return gpd.read_file(
-        "All_Coffee_Farms.shp"
-    )
+    try:
+        import geopandas as gpd
+        from pathlib import Path
+        
+        # Assuming your shapefile is in the data directory
+        file_path = Path('All_Coffee_Farms.shp')  # Update this path
+        return gpd.read_file(str(file_path))
+    except Exception as e:
+        print(f"Error loading croplands: {e}")
+        return None
 
 def filter_cropland_by_county_and_type(croplands, selected_county, selected_cropland):
     county_geometry = selected_county.geometry.iloc[0]
@@ -722,6 +746,5 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
 
