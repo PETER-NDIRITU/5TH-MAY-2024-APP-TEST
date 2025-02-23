@@ -18,7 +18,7 @@ import networkx as nx
 import tempfile
 
 # Initialize Earth Engine
-ee.Initialize(project="ee-thukupeter487soknotproject")
+ee.Initialize()
 ee.Authenticate(auth_mode=remote)
 
 # def load_kenyan_counties():
