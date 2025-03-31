@@ -5,7 +5,8 @@ google-auth-httplib2==0.1.0
 streamlit==1.25.0
 geopandas==0.14.1
 geemap==0.19.6
-shapely==2.0.1
+shapely==2.0.2
+pillow==10.0.0
 folium==0.14.0
 pyproj==3.6.1
 fpdf==1.7.2
