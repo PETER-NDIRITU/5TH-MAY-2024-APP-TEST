@@ -63,29 +63,41 @@
 import os
 os.environ['USE_PYGEOS'] = '0'  # Disable PyGEOS for GeoPandas compatibility
 
+# Initialize Earth Engine FIRST (before other imports)
 import ee
 import streamlit as st
 
-if 'earth_engine' in st.secrets:
+# Option 1: Check for direct environment variable
+if 'EARTHENGINE_TOKEN' in os.environ:
     try:
-        # Direct token initialization
-        os.environ['EARTHENGINE_TOKEN'] = st.secrets["earth_engine"]["refresh_token"]
         ee.Initialize(
             opt_url='https://earthengine.googleapis.com',
-            credentials='persistent'
+            credentials='persistent'  # Uses the env var automatically
         )
-        st.success("Earth Engine initialized!")
-    except Exception as e:
-        st.error(f"Failed to initialize: {str(e)}")
-        st.stop()
-else:
-    st.error("Missing Earth Engine token in secrets.toml")
-    st.stop()
-
-
+        st.success("Earth Engine initialized via ENV!")
+    
+# Option 2: Fallback to secrets.toml
+    except Exception:
+        if 'earth_engine' in st.secrets:
+            try:
+                os.environ['EARTHENGINE_TOKEN'] = st.secrets["earth_engine"]["refresh_token"]
+                ee.Initialize(
+                    opt_url='https://earthengine.googleapis.com',
+                    credentials='persistent'
+                )
+                st.success("Earth Engine initialized via secrets.toml!")
+            except Exception as e:
+                st.error(f"Initialization failed: {str(e)}")
+                st.stop()
+        else:
+            st.error("""
+                Missing Earth Engine credentials. Add either:
+                1. EARTHENGINE_TOKEN environment variable, OR
+                2. [earth_engine] refresh_token in secrets.toml
+            """)
+            st.stop()
 
 # Now import all other libraries
-import streamlit as st
 import datetime
 import io
 import tempfile
