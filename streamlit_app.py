@@ -18,9 +18,15 @@ import networkx as nx
 import tempfile
 
 # Initialize Earth Engine
-ee.Initialize()
-ee.Authenticate(auth_mode=remote)
-
+# ee.Initialize()
+# ee.Authenticate(auth_mode=remote)
+# Initialize Earth Engine
+try:
+    ee.Initialize()
+except Exception:
+    ee.Authenticate()
+    ee.Initialize()
+    
 # def load_kenyan_counties():
 #     return gpd.read_file(
 #         "Counties.shp")
