@@ -62,10 +62,9 @@ from pathlib import Path
 #     st.stop()
 # Earth Engine authentication
 # Earth Engine authentication
+# Earth Engine authentication
 if 'EARTHENGINE_TOKEN' in st.secrets:
-    token = st.secrets['EARTHENGINE_TOKEN']
-    credentials = ee.ServiceAccountCredentials(None, None, None, None, None, token)
-    ee.Initialize(credentials)
+    ee.Initialize(opt_url='https://earthengine.googleapis.com', credentials='persistent')
 else:
     st.error("Earth Engine credentials not found in secrets.")
 # Now import the rest of the libraries
