@@ -1,3 +1,4 @@
+libgeos-c1v5
 libgeos-dev
 libproj-dev
 gdal-bin
