@@ -1,38 +1,79 @@
-import ee.batch
-import streamlit as st
-import ee
-import datetime
-import geopandas as gpd
-import geemap.foliumap as geemap
-from shapely.geometry import box, mapping, Point
-import folium
+# import ee.batch
+# import streamlit as st
+# import ee
+# import datetime
+# import geopandas as gpd
+# import geemap.foliumap as geemap
+# from shapely.geometry import box, mapping, Point
+# import folium
+# import os
+# import zipfile
+# from pyproj import Transformer
+# from fpdf import FPDF
+# import io
+# from streamlit_geolocation import streamlit_geolocation
+# import osmnx as ox
+# import ipyleaflet
+# import networkx as nx
+# import tempfile
+
+# # Initialize Earth Engine
+# # ee.Initialize()
+# # ee.Authenticate(auth_mode=remote)
+# # Initialize Earth Engine
+# # Earth Engine authentication using Streamlit secrets
+# if 'EARTHENGINE_TOKEN' in st.secrets:
+#     # Configure credentials using the token from secrets
+#     credentials = ee.ServiceAccountCredentials(None, key_data=st.secrets['EARTHENGINE_TOKEN'])
+#     ee.Initialize(credentials)
+# else:
+#     # Fallback for local development
+#     try:
+#         ee.Initialize()
+#     except Exception:
+#         ee.Authenticate()
+#         ee.Initialize()
+
 import os
-import zipfile
-from pyproj import Transformer
-from fpdf import FPDF
+import streamlit as st
+import datetime
 import io
-from streamlit_geolocation import streamlit_geolocation
+import tempfile
+import zipfile
+from pathlib import Path
+
+# First handle Earth Engine authentication before importing any EE-dependent libraries
+if 'EARTHENGINE_TOKEN' in st.secrets:
+    # Write the token to a temporary file
+    import json
+    from google.oauth2.service_account import Credentials
+    import ee
+    
+    # Create a credentials object from the token
+    service_account_key = st.secrets["EARTHENGINE_TOKEN"]
+    
+    # Initialize Earth Engine with the credentials
+    credentials = ee.ServiceAccountCredentials(None, key_data=service_account_key)
+    ee.Initialize(credentials)
+    
+    st.success("Successfully authenticated with Earth Engine!")
+else:
+    st.error("Earth Engine token not found in secrets. Please add EARTHENGINE_TOKEN to the app secrets.")
+    st.stop()
+
+# Now import the rest of the libraries
+import folium
+import pyproj
+from pyproj import Transformer
+import shapely
+from shapely.geometry import box, mapping, Point
+import geopandas as gpd
+import networkx as nx
 import osmnx as ox
 import ipyleaflet
-import networkx as nx
-import tempfile
-
-# Initialize Earth Engine
-# ee.Initialize()
-# ee.Authenticate(auth_mode=remote)
-# Initialize Earth Engine
-# Earth Engine authentication using Streamlit secrets
-if 'EARTHENGINE_TOKEN' in st.secrets:
-    # Configure credentials using the token from secrets
-    credentials = ee.ServiceAccountCredentials(None, key_data=st.secrets['EARTHENGINE_TOKEN'])
-    ee.Initialize(credentials)
-else:
-    # Fallback for local development
-    try:
-        ee.Initialize()
-    except Exception:
-        ee.Authenticate()
-        ee.Initialize()
+from fpdf import FPDF
+from streamlit_geolocation import streamlit_geolocation
+import geemap.foliumap as geemap
 
 # def load_kenyan_counties():
 #     return gpd.read_file(
