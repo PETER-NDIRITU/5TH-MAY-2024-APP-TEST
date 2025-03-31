@@ -43,24 +43,28 @@ import zipfile
 from pathlib import Path
 
 # First handle Earth Engine authentication before importing any EE-dependent libraries
+# if 'EARTHENGINE_TOKEN' in st.secrets:
+#     # Write the token to a temporary file
+#     import json
+#     from google.oauth2.service_account import Credentials
+#     import ee
+    
+#     # Create a credentials object from the token
+#     service_account_key = st.secrets["EARTHENGINE_TOKEN"]
+    
+#     # Initialize Earth Engine with the credentials
+#     credentials = ee.ServiceAccountCredentials(None, key_data=service_account_key)
+#     ee.Initialize(credentials)
+    
+#     st.success("Successfully authenticated with Earth Engine!")
+# else:
+#     st.error("Earth Engine token not found in secrets. Please add EARTHENGINE_TOKEN to the app secrets.")
+#     st.stop()
+# Earth Engine authentication
 if 'EARTHENGINE_TOKEN' in st.secrets:
-    # Write the token to a temporary file
-    import json
-    from google.oauth2.service_account import Credentials
-    import ee
-    
-    # Create a credentials object from the token
-    service_account_key = st.secrets["EARTHENGINE_TOKEN"]
-    
-    # Initialize Earth Engine with the credentials
-    credentials = ee.ServiceAccountCredentials(None, key_data=service_account_key)
+    service_account = st.secrets['EARTHENGINE_TOKEN']
+    credentials = ee.ServiceAccountCredentials(None, None, None, None, None, service_account)
     ee.Initialize(credentials)
-    
-    st.success("Successfully authenticated with Earth Engine!")
-else:
-    st.error("Earth Engine token not found in secrets. Please add EARTHENGINE_TOKEN to the app secrets.")
-    st.stop()
-
 # Now import the rest of the libraries
 import folium
 import pyproj
