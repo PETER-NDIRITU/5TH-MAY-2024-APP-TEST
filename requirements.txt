@@ -3,10 +3,12 @@ google-api-python-client==2.88.0
 google-auth==2.22.0
 google-auth-httplib2==0.1.0
 streamlit>=1.28.0
-pillow>=7.1.0  
+pillow>=7.1.0
+# Fix these lines
 geopandas==0.14.1
-geemap==0.19.6
 shapely==2.0.2
+# Add GEOS dependency
+pyogrio==0.7.2  # Optional dependency for geopandas
 folium==0.14.0
 pyproj==3.6.1
 fpdf==1.7.2
