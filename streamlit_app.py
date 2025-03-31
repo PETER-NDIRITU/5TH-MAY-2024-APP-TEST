@@ -21,13 +21,18 @@ import tempfile
 # ee.Initialize()
 # ee.Authenticate(auth_mode=remote)
 # Initialize Earth Engine
-try:
-    ee.Initialize()
-except Exception:
-    ee.Authenticate()
-    ee.Initialize()
-
-
+# Earth Engine authentication using Streamlit secrets
+if 'EARTHENGINE_TOKEN' in st.secrets:
+    # Configure credentials using the token from secrets
+    credentials = ee.ServiceAccountCredentials(None, key_data=st.secrets['EARTHENGINE_TOKEN'])
+    ee.Initialize(credentials)
+else:
+    # Fallback for local development
+    try:
+        ee.Initialize()
+    except Exception:
+        ee.Authenticate()
+        ee.Initialize()
 
 # def load_kenyan_counties():
 #     return gpd.read_file(
