@@ -1,61 +1,33 @@
-# import ee.batch
-# import streamlit as st
-# import ee
-# import datetime
-# import geopandas as gpd
-# import geemap.foliumap as geemap
-# from shapely.geometry import box, mapping, Point
-# import folium
-# import os
-# import zipfile
-# from pyproj import Transformer
-# from fpdf import FPDF
-# import io
-# from streamlit_geolocation import streamlit_geolocation
-# import osmnx as ox
-# import ipyleaflet
-# import networkx as nx
-# import tempfile
-
-# # Initialize Earth Engine
-# # ee.Initialize()
-# # ee.Authenticate(auth_mode=remote)
-# # Initialize Earth Engine
-# try:
-#     ee.Initialize()
-# except Exception:
-#     ee.Authenticate()
-#     ee.Initialize()
-
-import os
-import datetime
-import io
-import tempfile
-import zipfile
-
+import ee.batch
 import streamlit as st
-from streamlit_geolocation import streamlit_geolocation
-from fpdf import FPDF
-
-# First initialize Earth Engine
 import ee
+import datetime
+import geopandas as gpd
+import geemap.foliumap as geemap
+from shapely.geometry import box, mapping, Point
+import folium
+import os
+import zipfile
+from pyproj import Transformer
+from fpdf import FPDF
+import io
+from streamlit_geolocation import streamlit_geolocation
+import osmnx as ox
+import ipyleaflet
+import networkx as nx
+import tempfile
+
+# Initialize Earth Engine
+# ee.Initialize()
+# ee.Authenticate(auth_mode=remote)
+# Initialize Earth Engine
 try:
     ee.Initialize()
 except Exception:
     ee.Authenticate()
     ee.Initialize()
 
-# Then import geospatial libraries
-import folium
-import pyproj
-from pyproj import Transformer
-import shapely
-from shapely.geometry import box, mapping, Point
-import geopandas as gpd
-import networkx as nx
-import osmnx as ox
-import ipyleaflet
-import geemap.foliumap as geemap
+
 
 # def load_kenyan_counties():
 #     return gpd.read_file(
