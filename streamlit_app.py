@@ -34,40 +34,71 @@
 #         ee.Authenticate()
 #         ee.Initialize()
 
+# import os
+# import streamlit as st
+# import datetime
+# import io
+# import tempfile
+# import zipfile
+# from pathlib import Path
+
+# if 'EARTHENGINE_TOKEN' in st.secrets:
+#     ee.Initialize(opt_url='https://earthengine.googleapis.com', credentials='persistent')
+# else:
+#     st.error("Earth Engine credentials not found in secrets.")
+# # Now import the rest of the libraries
+# import folium
+# import pyproj
+# from pyproj import Transformer
+# import shapely
+# from shapely.geometry import box, mapping, Point
+# import geopandas as gpd
+# import networkx as nx
+# import osmnx as ox
+# import ipyleaflet
+# from fpdf import FPDF
+# from streamlit_geolocation import streamlit_geolocation
+# import geemap.foliumap as geemap
+
+
 import os
+os.environ['USE_PYGEOS'] = '0'  # Disable PyGEOS for GeoPandas compatibility
+
+# First initialize Earth Engine using secrets
+try:
+    import ee
+    if 'earth_engine' in st.secrets:
+        # Initialize with service account credentials (recommended)
+        credentials = ee.ServiceAccountCredentials(
+            email=st.secrets["earth_engine"]["client_email"],
+            key_data=st.secrets["earth_engine"]["private_key"]
+        )
+        ee.Initialize(credentials=credentials)
+    elif 'earth_engine' in st.secrets and 'refresh_token' in st.secrets["earth_engine"]:
+        # Initialize with refresh token
+        credentials = ee.OAuth2Credentials(
+            None,  # No initial access token
+            client_id=None,
+            client_secret=None,
+            refresh_token=st.secrets["earth_engine"]["refresh_token"],
+            token_uri=ee.oauth.TOKEN_URI,
+            scopes=ee.oauth.SCOPES
+        )
+        ee.Initialize(credentials=credentials)
+    else:
+        st.error("Earth Engine credentials not properly configured in secrets.toml")
+        st.stop()
+except Exception as e:
+    st.error(f"Failed to initialize Earth Engine: {str(e)}")
+    st.stop()
+
+# Now import all other libraries
 import streamlit as st
 import datetime
 import io
 import tempfile
 import zipfile
 from pathlib import Path
-
-# First handle Earth Engine authentication before importing any EE-dependent libraries
-# if 'EARTHENGINE_TOKEN' in st.secrets:
-#     # Write the token to a temporary file
-#     import json
-#     from google.oauth2.service_account import Credentials
-#     import ee
-    
-#     # Create a credentials object from the token
-#     service_account_key = st.secrets["EARTHENGINE_TOKEN"]
-    
-#     # Initialize Earth Engine with the credentials
-#     credentials = ee.ServiceAccountCredentials(None, key_data=service_account_key)
-#     ee.Initialize(credentials)
-    
-#     st.success("Successfully authenticated with Earth Engine!")
-# else:
-#     st.error("Earth Engine token not found in secrets. Please add EARTHENGINE_TOKEN to the app secrets.")
-#     st.stop()
-# Earth Engine authentication
-# Earth Engine authentication
-# Earth Engine authentication
-if 'EARTHENGINE_TOKEN' in st.secrets:
-    ee.Initialize(opt_url='https://earthengine.googleapis.com', credentials='persistent')
-else:
-    st.error("Earth Engine credentials not found in secrets.")
-# Now import the rest of the libraries
 import folium
 import pyproj
 from pyproj import Transformer
