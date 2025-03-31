@@ -61,10 +61,13 @@ from pathlib import Path
 #     st.error("Earth Engine token not found in secrets. Please add EARTHENGINE_TOKEN to the app secrets.")
 #     st.stop()
 # Earth Engine authentication
+# Earth Engine authentication
 if 'EARTHENGINE_TOKEN' in st.secrets:
-    service_account = st.secrets['EARTHENGINE_TOKEN']
-    credentials = ee.ServiceAccountCredentials(None, None, None, None, None, service_account)
+    token = st.secrets['EARTHENGINE_TOKEN']
+    credentials = ee.ServiceAccountCredentials(None, None, None, None, None, token)
     ee.Initialize(credentials)
+else:
+    st.error("Earth Engine credentials not found in secrets.")
 # Now import the rest of the libraries
 import folium
 import pyproj
